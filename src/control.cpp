@@ -49,6 +49,7 @@ void on_bit_alive(){
 void on_bit_connected(){
     if (!bt_connected){
         tim_conn = 0;
+        Serial2.println("co,0,0,0,#");
         Serial.println("on_bit_conn");
     }
 }
@@ -94,7 +95,6 @@ void decoder_four(){
     Serial.println("decoder_four a");
     Serial.println("split: "+ retMsg4[0] + " - " +retMsg4[1] + " - " + retMsg4[2] + " - " + retMsg4[3]);
     if ((retMsg4[0].equals("re") && (retMsg4[3].equals("1"))) && (!bt_connected)){
-        
         bt_enabled = true;
         bt_alive = true;
         tim_alive = 0;

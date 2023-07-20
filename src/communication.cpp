@@ -14,7 +14,7 @@ STM32F401 - Mio Stimulation
 
 void bt_init();
 void on_serial();
-void on_BT_comm();
+void on_BT_comm(String line_in);
 
 extern bool bt_enabled;
 extern bool bt_connected;
@@ -42,16 +42,16 @@ void on_serial(){
     line1 = "";
 }
 
-void on_BT_comm(){
-    if (line2 == "OK"){
+void on_BT_comm(String line_in){
+    if (line_in == "OK"){
         bt_enabled = true;
     }else{
         // Serial.println(line2);
-        split_msg_4(line2);
+        split_msg_4(line_in);
         Serial.println("split: "+ retMsg4[0] + " - " +retMsg4[1] + " - " + retMsg4[2] + " - " + retMsg4[3]);
         decoder_four();
-        string2Complete = false;
-        line2="";
+        string1Complete = false;
+        
         retMsg4[0] = "";
         retMsg4[1] = "";
         retMsg4[2] = "";

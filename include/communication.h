@@ -10,6 +10,6 @@ ESP32WROOM - Mio Stimulation
 
 void bt_init();
 void on_serial();
-void on_BT_comm();
+void on_BT_comm(String line_in);
 
 #endif

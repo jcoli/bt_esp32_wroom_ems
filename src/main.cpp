@@ -7,6 +7,12 @@ espwroom32 - EMS
 #include <Arduino.h>
 #include "BluetoothSerial.h"
 
+#include "defines.h"
+#include "io_defines.h"
+#include "tools.h"
+#include "communication.h"
+#include "control.h"
+
 #define RXp2 16
 #define TXp2 17
 
@@ -139,6 +145,14 @@ void loop() {
       }  
     }
     Serial2.println("re,0,0,1,#");
+    Serial.println(tim_conn);
+  }
+
+  if ((tim_conn>=300) && (bt_connected)){
+       Serial.println("TIM COMM");
+       bt_connected= false; 
+       SerialBT.disconnect();
+       on_bit_connected();
   }
   
   if (millis() - loopDelay_bit_alive > 20) {
@@ -156,7 +170,6 @@ void serialEvent() {
     line += inChar;
     if (inChar == '#') {
       stringComplete = true;
-      // on_serial();
       Serial.print(line);
     }
   }
@@ -168,12 +181,11 @@ void serialEvent1() {
     delay(50);
     char inChar = (char)SerialBT.read();
     line1 += inChar;
-    // Serial.println(line1);
     if ((inChar == '#')) {
       string1Complete = true;
-      // Serial.println(line1);
     }
   }
+  on_BT_comm(line1);
   Serial.println(line1);
   Serial2.println(line1);
   string1Complete = false;
@@ -181,16 +193,12 @@ void serialEvent1() {
 }
 
 void serialEvent2() {
-  // Serial.print("serial 2: ");
   while (Serial2.available()) {
     delay(50);
     char inChar = (char)Serial2.read();
     line2 += inChar;
-    // Serial.println(line2);
     if ((inChar == '#')) {
       string2Complete = true;
-
-      // Serial.println(line2);
     }
   }
   Serial.println(line2);
