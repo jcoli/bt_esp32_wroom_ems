@@ -30,22 +30,22 @@ void BTAuthCompleteCallback(boolean success);
 BluetoothSerial SerialBT;
 boolean confirmRequestPending = true;
 
-
-
-
 void serialEvent();
 void serialEvent1();
 void serialEvent2();
 void serialEventRun(void);
 
-void serialEventRun(void) {
+void serialEventRun(void)
+{
   // #if defined(HAVE_HWSERIAL2)
-  if (serialEvent2 && Serial2.available()) {
+  if (serialEvent2 && Serial2.available())
+  {
     serialEvent2();
   }
   // #endif
   // #if defined(USBCON)
-  if (serialEvent && Serial.available()) {
+  if (serialEvent && Serial.available())
+  {
     serialEvent();
   }
   // #endif
@@ -55,22 +55,27 @@ void serialEventRun(void) {
   // }
   // #endif
 
-  if (SerialBT.available()) {
+  if (SerialBT.available())
+  {
     serialEvent1();
   }
 }
 
-
-void BTConfirmRequestCallback(uint32_t numVal) {
+void BTConfirmRequestCallback(uint32_t numVal)
+{
   confirmRequestPending = true;
   Serial.println(numVal);
 }
 
-void BTAuthCompleteCallback(boolean success) {
+void BTAuthCompleteCallback(boolean success)
+{
   confirmRequestPending = false;
-  if (success) {
+  if (success)
+  {
     Serial.println("Pairing success!!");
-  } else {
+  }
+  else
+  {
     Serial.println("Pairing failed, rejected by user!!");
   }
 }
@@ -96,7 +101,8 @@ unsigned long loopDelay_int_temp = millis();
 unsigned long loopDelay_bit_alive = millis();
 unsigned long loopDelay_bit_conn = millis();
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   Serial2.begin(19200, SERIAL_8N1, RXp2, TXp2);
   delay(3000);
@@ -104,84 +110,99 @@ void setup() {
   SerialBT.enableSSP();
   SerialBT.onConfirmRequest(BTConfirmRequestCallback);
   SerialBT.onAuthComplete(BTAuthCompleteCallback);
-  SerialBT.begin("EMS-01");  //Bluetooth device name
+  SerialBT.begin("EMS-01"); // Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
   Serial.println("Not connected!!");
   Serial2.println("re,0,0,1,#");
-  
 }
 
-void loop() {
+void loop()
+{
   // delay(1000);
 
-  if (SerialBT.available()) {
+  if (SerialBT.available())
+  {
     serialEvent1();
   }
 
-  if (confirmRequestPending) {
+  if (confirmRequestPending)
+  {
     // Serial.println("confirmRequestPending");
 
     SerialBT.confirmReply(true);
     confirmRequestPending = false;
+  }
+  else
+  {
 
-  } else {
-    
     delay(20);
   }
 
-  if (millis() - loopDelay_bit_conn > 2000) {
+  if (millis() - loopDelay_bit_conn > 2000)
+  {
     loopDelay_bit_conn = millis();
-    if (SerialBT.connected()) {
-        bt_connected = true;
-        Serial.println("Connected!");
-        Serial2.println("co,0,0,1,#");
-        tim_sleep = 0;
-    } else {
-      if(bt_connected){
+    if (SerialBT.connected())
+    {
+      bt_connected = true;
+      Serial.println("Connected!");
+      Serial2.println("co,0,0,1,#");
+      tim_sleep = 0;
+    }
+    else
+    {
+      if (bt_connected)
+      {
         bt_connected = false;
         SerialBT.disconnect();
         Serial.println("Disconnected!");
         Serial2.println("co,0,0,0,#");
-      }  
+      }
     }
     Serial2.println("re,0,0,1,#");
     Serial.println(tim_conn);
   }
 
-  if ((tim_conn>=300) && (bt_connected)){
-       Serial.println("TIM COMM");
-       bt_connected= false; 
-       SerialBT.disconnect();
-       on_bit_connected();
+  if ((tim_conn >= 300) && (bt_connected))
+  {
+    Serial.println("TIM COMM");
+    bt_connected = false;
+    SerialBT.disconnect();
+    on_bit_connected();
   }
-  
-  if (millis() - loopDelay_bit_alive > 20) {
+
+  if (millis() - loopDelay_bit_alive > 20)
+  {
     loopDelay_bit_alive = millis();
     tim_alive++;
     tim_conn++;
   }
 }
 
-
-void serialEvent() {
-  while (Serial.available()) {
+void serialEvent()
+{
+  while (Serial.available())
+  {
     delay(30);
     char inChar = (char)Serial.read();
     line += inChar;
-    if (inChar == '#') {
+    if (inChar == '#')
+    {
       stringComplete = true;
       Serial.print(line);
     }
   }
 }
 
-void serialEvent1() {
+void serialEvent1()
+{
   Serial.print("serial 1: ");
-  while (SerialBT.available()) {
+  while (SerialBT.available())
+  {
     delay(50);
     char inChar = (char)SerialBT.read();
     line1 += inChar;
-    if ((inChar == '#')) {
+    if ((inChar == '#'))
+    {
       string1Complete = true;
     }
   }
@@ -192,12 +213,15 @@ void serialEvent1() {
   line1 = "";
 }
 
-void serialEvent2() {
-  while (Serial2.available()) {
+void serialEvent2()
+{
+  while (Serial2.available())
+  {
     delay(50);
     char inChar = (char)Serial2.read();
     line2 += inChar;
-    if ((inChar == '#')) {
+    if ((inChar == '#'))
+    {
       string2Complete = true;
     }
   }
