@@ -146,6 +146,7 @@ void loop()
       bt_connected = true;
       Serial.println("Connected!");
       Serial2.println("co,0,0,1,#");
+      // SerialBT.println("cu,0,0,1,#");
       tim_sleep = 0;
     }
     else
@@ -159,7 +160,7 @@ void loop()
       }
     }
     Serial2.println("re,0,0,1,#");
-    Serial.println(tim_conn);
+    // Serial.println(tim_conn);
   }
 
   if ((tim_conn >= 300) && (bt_connected))
@@ -195,7 +196,7 @@ void serialEvent()
 
 void serialEvent1()
 {
-  Serial.print("serial 1: ");
+  // Serial.print("serial 1: ");
   while (SerialBT.available())
   {
     delay(50);
@@ -207,7 +208,7 @@ void serialEvent1()
     }
   }
   on_BT_comm(line1);
-  Serial.println(line1);
+  // Serial.println(line1);
   Serial2.println(line1);
   string1Complete = false;
   line1 = "";
@@ -225,7 +226,8 @@ void serialEvent2()
       string2Complete = true;
     }
   }
-  Serial.println(line2);
+  // Serial.print("serial 2: ");
+  // Serial.println(line2);
   SerialBT.println(line2);
   string2Complete = false;
   line2 = "";

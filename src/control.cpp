@@ -92,13 +92,13 @@ void decoder_three(){
 }
 
 void decoder_four(){
-    Serial.println("decoder_four a");
-    Serial.println("split: "+ retMsg4[0] + " - " +retMsg4[1] + " - " + retMsg4[2] + " - " + retMsg4[3]);
+    // Serial.println("decoder_four a");
+    // Serial.println("split: "+ retMsg4[0] + " - " +retMsg4[1] + " - " + retMsg4[2] + " - " + retMsg4[3]);
     if ((retMsg4[0].equals("re") && (retMsg4[3].equals("1"))) && (!bt_connected)){
         bt_enabled = true;
         bt_alive = true;
         tim_alive = 0;
-        Serial.println("decoder_four - 1");
+        // Serial.println("decoder_four - 1");
     }
     if (retMsg4[0].equals("co")){
         if(retMsg4[3].equals("1")){
@@ -112,7 +112,7 @@ void decoder_four(){
             SerialBT.disconnect();
             bt_connected = false;
             tim_conn = 0;
-            Serial.println("decoder_four - 3");
+            // Serial.println("decoder_four - 3");
         } 
     }
     
