@@ -149,16 +149,7 @@ void loop()
       // SerialBT.println("cu,0,0,1,#");
       tim_sleep = 0;
     }
-    else
-    {
-      if (bt_connected)
-      {
-        bt_connected = false;
-        SerialBT.disconnect();
-        Serial.println("Disconnected!");
-        Serial2.println("co,0,0,0,#");
-      }
-    }
+    
     Serial2.println("re,0,0,1,#");
     // Serial.println(tim_conn);
   }

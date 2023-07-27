@@ -106,13 +106,13 @@ void decoder_four(){
             bt_connected = true;
             tim_conn = 0;
             tim_sleep = 0;
-            Serial.println("decoder_four - 2");
+            Serial.println("decoder_four - 4");
         }
         if(retMsg4[3].equals("0")){
             SerialBT.disconnect();
             bt_connected = false;
             tim_conn = 0;
-            // Serial.println("decoder_four - 3");
+            Serial.println("decoder_four - 4");
         } 
     }
     
