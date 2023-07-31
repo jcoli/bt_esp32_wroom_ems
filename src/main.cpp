@@ -6,12 +6,14 @@ espwroom32 - EMS
 **/
 #include <Arduino.h>
 #include "BluetoothSerial.h"
+#include "esp_bt_device.h"
 
 #include "defines.h"
 #include "io_defines.h"
 #include "tools.h"
 #include "communication.h"
 #include "control.h"
+
 
 #define RXp2 16
 #define TXp2 17
@@ -34,6 +36,9 @@ void serialEvent();
 void serialEvent1();
 void serialEvent2();
 void serialEventRun(void);
+void printDeviceAddress();
+
+
 
 void serialEventRun(void)
 {
@@ -89,6 +94,8 @@ int tim_alive = 0;
 int tim_conn = 0;
 int tim_sleep = 0;
 
+String btAddress;
+
 String line = "";
 String line1 = "";
 String line2 = "";
@@ -106,6 +113,7 @@ void setup()
   Serial.begin(115200);
   Serial2.begin(19200, SERIAL_8N1, RXp2, TXp2);
   delay(3000);
+  // btAddress = SerialBT.
   Serial.println("EMS");
   SerialBT.enableSSP();
   SerialBT.onConfirmRequest(BTConfirmRequestCallback);
@@ -113,7 +121,10 @@ void setup()
   SerialBT.begin("EMS-01"); // Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
   Serial.println("Not connected!!");
+  printDeviceAddress();
+  sendMsg1(btAddress);
   Serial2.println("re,0,0,1,#");
+  
 }
 
 void loop()
@@ -150,7 +161,7 @@ void loop()
       tim_sleep = 0;
     }
     
-    Serial2.println("re,0,0,1,#");
+    sendMsg2("re,0,0,1");
     // Serial.println(tim_conn);
   }
 
@@ -219,7 +230,25 @@ void serialEvent2()
   }
   // Serial.print("serial 2: ");
   // Serial.println(line2);
-  SerialBT.println(line2);
+  sendBT(line2);
   string2Complete = false;
   line2 = "";
+}
+
+
+void printDeviceAddress() {
+
+  const uint8_t* point = esp_bt_dev_get_address();
+  for (int i = 0; i < 6; i++) {
+    char str[3];
+    sprintf(str, "%02X", (int)point[i]);
+    Serial.print(str);
+    btAddress = btAddress + (str);
+    if (i < 5){
+      Serial.print(":");
+      btAddress = btAddress + ":";  
+    }
+
+  }
+  Serial.println("--");
 }
