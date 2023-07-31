@@ -6,6 +6,7 @@ STM32F401 - Mio Stimulation
 **/
 
 #include <Arduino.h>
+#include "BluetoothSerial.h"
 
 #include "defines.h"
 #include "io_defines.h"
@@ -15,10 +16,15 @@ STM32F401 - Mio Stimulation
 void bt_init();
 void on_serial();
 void on_BT_comm(String line_in);
+void sendMsg1(String s);
+void sendMsg2(String s);
+void sendBT(String s);
 
 extern bool bt_enabled;
 extern bool bt_connected;
 extern bool bt_alive;
+
+extern String btAddress;
 
 extern String line;
 extern String line1;
@@ -31,6 +37,8 @@ extern String retMsg2[2];
 extern String retMsg3[3];
 extern String retMsg4[4];
 extern String retMsg5[5]; 
+
+extern BluetoothSerial SerialBT;
 
 void bt_init(){
     Serial.println("bt_init");
@@ -57,6 +65,17 @@ void on_BT_comm(String line_in){
         retMsg4[2] = "";
         retMsg4[3] = "";
     }
+}    
+
+void sendMsg1(String s){
+    Serial.println(s);
+}  
     
-    
-}
+void sendMsg2(String s){
+    Serial2.println(s+",#");
+}   
+
+void sendBT(String s){
+    Serial.println(s);
+    SerialBT.println(btAddress+","+s+",#");
+}   
