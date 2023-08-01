@@ -45,7 +45,7 @@ void bt_init(){
 }
 
 void on_serial(){ 
-    Serial.print(line);
+    // Serial.print(line);
     stringComplete = false;
     line1 = "";
 }
@@ -76,6 +76,9 @@ void sendMsg2(String s){
 }   
 
 void sendBT(String s){
-    Serial.println(s);
-    SerialBT.println(btAddress+","+s+",#");
+    string2Complete = false;
+    line2 = "";
+    // Serial.print("S: ");
+    // Serial.println(s);
+    SerialBT.println(btAddress+","+s);
 }   

@@ -218,7 +218,7 @@ void serialEvent1()
 
 void serialEvent2()
 {
-  while (Serial2.available())
+  while (Serial2.available() && !string2Complete)
   {
     delay(50);
     char inChar = (char)Serial2.read();
@@ -228,8 +228,8 @@ void serialEvent2()
       string2Complete = true;
     }
   }
-  // Serial.print("serial 2: ");
-  // Serial.println(line2);
+  Serial.print("serial 2: ");
+  Serial.println(line2);
   sendBT(line2);
   string2Complete = false;
   line2 = "";
@@ -242,13 +242,13 @@ void printDeviceAddress() {
   for (int i = 0; i < 6; i++) {
     char str[3];
     sprintf(str, "%02X", (int)point[i]);
-    Serial.print(str);
+    // Serial.print(str);
     btAddress = btAddress + (str);
     if (i < 5){
-      Serial.print(":");
+      // Serial.print(":");
       btAddress = btAddress + ":";  
     }
 
   }
-  Serial.println("--");
+  // Serial.println("--");
 }
