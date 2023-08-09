@@ -102,17 +102,25 @@ void decoder_four(){
     }
     if (retMsg4[0].equals("co")){
         if(retMsg4[3].equals("1")){
-            
             bt_connected = true;
             tim_conn = 0;
             tim_sleep = 0;
-            Serial.println("decoder_four - 4");
         }
         if(retMsg4[3].equals("0")){
             SerialBT.disconnect();
             bt_connected = false;
             tim_conn = 0;
-            Serial.println("decoder_four - 4");
+            Serial2.println("co,0,0,0,#");
+        } 
+    }
+    if (retMsg4[0].equals("ru")){
+        if(retMsg4[3].equals("1")){
+            Serial2.println("ru,0,0,1,#");
+            Serial.println("run");
+        }
+        if(retMsg4[3].equals("0")){
+            Serial2.println("ru,0,0,0,#");
+            Serial.println("not run");
         } 
     }
     
