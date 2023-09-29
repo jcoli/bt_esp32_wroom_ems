@@ -156,7 +156,7 @@ void loop()
     {
       bt_connected = true;
       Serial.println("Connected!");
-      Serial2.println("co,0,0,1,#");
+      Serial2.println("0,0,0,1,#");
       // SerialBT.println("cu,0,0,1,#");
       tim_sleep = 0;
     }
