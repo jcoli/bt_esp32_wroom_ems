@@ -41,7 +41,7 @@ extern String retMsg5[5];
 extern BluetoothSerial SerialBT;
 
 void bt_init(){
-    Serial.println("bt_init");
+    // Serial.println("bt_init");
 }
 
 void on_serial(){ 

@@ -30,10 +30,10 @@ extern int tim_alive;
 extern int tim_conn;
 extern int tim_sleep;
 
-extern String retMsg2[2];
-extern String retMsg3[3];
+// extern String retMsg2[2];
+// extern String retMsg3[3];
 extern String retMsg4[4];
-extern String retMsg5[5]; 
+// extern String retMsg5[5]; 
 
 extern BluetoothSerial SerialBT;
 
@@ -42,7 +42,7 @@ void on_bit_alive(){
     if (!bt_alive){
         bt_enabled = false;
         tim_alive = 0;
-        Serial.println("on_bit_alive");
+        // Serial.println("on_bit_alive");
     }
 }
 
@@ -50,46 +50,33 @@ void on_bit_connected(){
     if (!bt_connected){
         tim_conn = 0;
         Serial2.println("0,0,0,0,#");
-        Serial.println("on_bit_conn");
+        // Serial.println("on_bit_conn");
     }
 }
 
-void on_receive(int mSize){
-    switch (mSize) {
-        case 0:
-          Serial.println("0");
-          break;
-        case 1:
-          Serial.println("1");
-          break;
-        case 2:
-          Serial.println("2");
-          break;
-        case 3:
-          Serial.println("3");
-          break;
-        case 4:
-          Serial.println("4");
-          break;
-        case 5:
-          Serial.println("5");
-          break;  
-    }      
-}
+// void on_receive(int mSize){
+//     switch (mSize) {
+//         case 0:
+//         //   Serial.println("0");
+//           break;
+//         case 1:
+//         //   Serial.println("1");
+//           break;
+//         case 2:
+//         //   Serial.println("2");
+//           break;
+//         case 3:
+//         //   Serial.println("3");
+//           break;
+//         case 4:
+//         //   Serial.println("4");
+//           break;
+//         case 5:
+//         //   Serial.println("5");
+//           break;  
+//     }      
+// }
 
-void decoder_one(){
-    Serial.println("decoder_one");
-}
-
-void decoder_two(){
-    Serial.println("decoder_two");
-
-}
-
-void decoder_three(){
-    Serial.println("decoder_three");
-
-}
 
 void decoder_four(){
     // Serial.println("decoder_four a");
@@ -113,22 +100,9 @@ void decoder_four(){
             Serial2.println("0,0,0,0,#");
         } 
     }
-    if (retMsg4[0].equals("3")){
-        if(retMsg4[3].equals("1")){
-            Serial2.println("ru,0,0,1,#");
-            Serial.println("run");
-        }
-        if(retMsg4[3].equals("0")){
-            Serial2.println("ru,0,0,0,#");
-            Serial.println("not run");
-        } 
-    }
+    
     
 }
 
-void decoder_five(){
-    Serial.println("decoder_five");
-
-}
 
 

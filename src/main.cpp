@@ -69,7 +69,7 @@ void serialEventRun(void)
 void BTConfirmRequestCallback(uint32_t numVal)
 {
   confirmRequestPending = true;
-  Serial.println(numVal);
+  // Serial.println(numVal);
 }
 
 void BTAuthCompleteCallback(boolean success)
@@ -77,11 +77,11 @@ void BTAuthCompleteCallback(boolean success)
   confirmRequestPending = false;
   if (success)
   {
-    Serial.println("Pairing success!!");
+    // Serial.println("Pairing success!!");
   }
   else
   {
-    Serial.println("Pairing failed, rejected by user!!");
+    // Serial.println("Pairing failed, rejected by user!!");
   }
 }
 
@@ -149,25 +149,25 @@ void loop()
     delay(20);
   }
 
-  if (millis() - loopDelay_bit_conn > 2000)
+  if (millis() - loopDelay_bit_conn > 5000)
   {
     loopDelay_bit_conn = millis();
     if (SerialBT.connected())
     {
       bt_connected = true;
-      Serial.println("Connected!");
+      // Serial.println("Connected!");
       Serial2.println("0,0,0,1,#");
       // SerialBT.println("cu,0,0,1,#");
       tim_sleep = 0;
     }
     
-    sendMsg2("re,0,0,1");
+    sendMsg2("1,0,0,1,#");
     // Serial.println(tim_conn);
   }
 
   if ((tim_conn >= 300) && (bt_connected))
   {
-    Serial.println("TIM COMM");
+    // Serial.println("TIM COMM");
     bt_connected = false;
     SerialBT.disconnect();
     on_bit_connected();
@@ -191,7 +191,7 @@ void serialEvent()
     if (inChar == '#')
     {
       stringComplete = true;
-      Serial.print(line);
+      // Serial.print(line);
     }
   }
 }
@@ -201,7 +201,7 @@ void serialEvent1()
   // Serial.print("serial 1: ");
   while (SerialBT.available())
   {
-    delay(50);
+    // delay(50);
     char inChar = (char)SerialBT.read();
     line1 += inChar;
     if ((inChar == '#'))
@@ -210,7 +210,8 @@ void serialEvent1()
     }
   }
   on_BT_comm(line1);
-  // Serial.println(line1);
+  Serial.print("serial BT: ");
+  Serial.println(line1);
   Serial2.println(line1);
   string1Complete = false;
   line1 = "";
