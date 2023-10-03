@@ -159,6 +159,8 @@ void loop()
       Serial2.println("0,0,0,1,#");
       // SerialBT.println("cu,0,0,1,#");
       tim_sleep = 0;
+    }else{
+      
     }
     
     sendMsg2("1,0,0,1,#");
@@ -185,7 +187,7 @@ void serialEvent()
 {
   while (Serial.available())
   {
-    delay(30);
+    // delay(30);
     char inChar = (char)Serial.read();
     line += inChar;
     if (inChar == '#')
@@ -221,7 +223,7 @@ void serialEvent2()
 {
   while (Serial2.available() && !string2Complete)
   {
-    delay(50);
+    // delay(50);
     char inChar = (char)Serial2.read();
     line2 += inChar;
     if ((inChar == '#'))
