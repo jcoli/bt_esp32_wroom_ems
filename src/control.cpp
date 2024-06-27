@@ -35,7 +35,7 @@ extern int tim_sleep;
 extern String retMsg4[4];
 // extern String retMsg5[5]; 
 
-extern BluetoothSerial SerialBT;
+extern BluetoothSerial BT_SERIAL;
 
 
 void on_bit_alive(){
@@ -94,7 +94,7 @@ void decoder_four(){
             tim_sleep = 0;
         }
         if(retMsg4[3].equals("0")){
-            SerialBT.disconnect();
+            BT_SERIAL.disconnect();
             bt_connected = false;
             tim_conn = 0;
             Serial2.println("0,0,0,0,#");

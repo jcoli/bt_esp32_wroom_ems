@@ -6,7 +6,7 @@ espwroom32 - EMS
 **/
 #include <Arduino.h>
 #include "BluetoothSerial.h"
-#include "esp_bt_device.h"
+// #include "esp_bt_device.h"
 
 #include "defines.h"
 #include "io_defines.h"
@@ -18,25 +18,25 @@ espwroom32 - EMS
 #define RXp2 16
 #define TXp2 17
 
-void BTConfirmRequestCallback(uint32_t numVal);
-void BTAuthCompleteCallback(boolean success);
+// void BTConfirmRequestCallback(uint32_t numVal);
+// void BTAuthCompleteCallback(boolean success);
 
-#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-#endif
+// #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+// #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+// #endif
 
-#if !defined(CONFIG_BT_SPP_ENABLED)
-#error Serial Bluetooth not available or not enabled. It is only available for the ESP32 chip.
-#endif
+// #if !defined(CONFIG_BT_SPP_ENABLED)
+// #error Serial Bluetooth not available or not enabled. It is only available for the ESP32 chip.
+// #endif
 
-BluetoothSerial SerialBT;
+BluetoothSerial BTSERIAL;
 boolean confirmRequestPending = true;
 
 void serialEvent();
 void serialEvent1();
 void serialEvent2();
 void serialEventRun(void);
-void printDeviceAddress();
+// void printDeviceAddress();
 
 
 
@@ -53,37 +53,13 @@ void serialEventRun(void)
   {
     serialEvent();
   }
-  // #endif
-  // // #if defined(HAVE_HWSERIAL3)
-  // if (serialEvent3 && Serial3.available()) {
-  //   serialEvent3();
-  // }
-  // #endif
-
-  if (SerialBT.available())
+  
+  if (serialEvent1 && BT_SERIAL.available())
   {
     serialEvent1();
   }
 }
 
-void BTConfirmRequestCallback(uint32_t numVal)
-{
-  confirmRequestPending = true;
-  // Serial.println(numVal);
-}
-
-void BTAuthCompleteCallback(boolean success)
-{
-  confirmRequestPending = false;
-  if (success)
-  {
-    // Serial.println("Pairing success!!");
-  }
-  else
-  {
-    // Serial.println("Pairing failed, rejected by user!!");
-  }
-}
 
 bool bt_enabled = false;
 bool bt_connected = false;
@@ -115,13 +91,13 @@ void setup()
   delay(3000);
   // btAddress = SerialBT.
   Serial.println("EMS");
-  SerialBT.enableSSP();
-  SerialBT.onConfirmRequest(BTConfirmRequestCallback);
-  SerialBT.onAuthComplete(BTAuthCompleteCallback);
-  SerialBT.begin("EMS-01"); // Bluetooth device name
+  BT_SERIAL.begin("EMS-01"); 
+  BT_SERIAL.begin(19200);
+  // Bluetooth device name
+  delay(10000);
   Serial.println("The device started, now you can pair it with bluetooth!");
   Serial.println("Not connected!!");
-  printDeviceAddress();
+  // printDeviceAddress();
   sendMsg1(btAddress);
   Serial2.println("re,0,0,1,#");
   
@@ -131,47 +107,36 @@ void loop()
 {
   // delay(1000);
 
-  if (SerialBT.available())
+  if (BT_SERIAL.available())
   {
     serialEvent1();
   }
 
-  if (confirmRequestPending)
-  {
-    // Serial.println("confirmRequestPending");
-
-    SerialBT.confirmReply(true);
-    confirmRequestPending = false;
-  }
-  else
-  {
-
-    delay(20);
-  }
+  
 
   if (millis() - loopDelay_bit_conn > 5000)
   {
     loopDelay_bit_conn = millis();
-    if (SerialBT.connected())
+    if (BT_SERIAL.connected())
     {
       bt_connected = true;
-      // Serial.println("Connected!");
+      Serial.println("Connected!");
       Serial2.println("0,0,0,1,#");
-      // SerialBT.println("cu,0,0,1,#");
+      BT_SERIAL.print("0,0,0,1,#");
       tim_sleep = 0;
     }else{
-      
+      Serial.println("Disconnected!");
     }
     
     sendMsg2("1,0,0,1,#");
     // Serial.println(tim_conn);
   }
 
-  if ((tim_conn >= 300) && (bt_connected))
+  if ((tim_conn >= 700) && (bt_connected))
   {
     // Serial.println("TIM COMM");
     bt_connected = false;
-    SerialBT.disconnect();
+    BT_SERIAL.disconnect();
     on_bit_connected();
   }
 
@@ -201,10 +166,10 @@ void serialEvent()
 void serialEvent1()
 {
   // Serial.print("serial 1: ");
-  while (SerialBT.available())
+  while (BT_SERIAL.available())
   {
     // delay(50);
-    char inChar = (char)SerialBT.read();
+    char inChar = (char)BT_SERIAL.read();
     line1 += inChar;
     if ((inChar == '#'))
     {
@@ -239,19 +204,19 @@ void serialEvent2()
 }
 
 
-void printDeviceAddress() {
+// void printDeviceAddress() {
 
-  const uint8_t* point = esp_bt_dev_get_address();
-  for (int i = 0; i < 6; i++) {
-    char str[3];
-    sprintf(str, "%02X", (int)point[i]);
-    // Serial.print(str);
-    btAddress = btAddress + (str);
-    if (i < 5){
-      // Serial.print(":");
-      btAddress = btAddress + ":";  
-    }
+//   const uint8_t* point = esp_bt_dev_get_address();
+//   for (int i = 0; i < 6; i++) {
+//     char str[3];
+//     sprintf(str, "%02X", (int)point[i]);
+//     // Serial.print(str);
+//     btAddress = btAddress + (str);
+//     if (i < 5){
+//       // Serial.print(":");
+//       btAddress = btAddress + ":";  
+//     }
 
-  }
-  // Serial.println("--");
-}
+//   }
+//   // Serial.println("--");
+// }

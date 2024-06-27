@@ -19,6 +19,8 @@ ESP32WROOM - Mio Stimulation
 #define TEMP_MAX 50
 #define TEMP_MIN 10
 
+#define BT_SERIAL BTSERIAL 
+
 static const char version[] = "0.0a";
 static const char develop[] =  "jcoli-Tecnocoli";
 static const char email_develop[] = "jcoli@tecnocoli.com.br";

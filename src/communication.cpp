@@ -38,7 +38,7 @@ extern String retMsg3[3];
 extern String retMsg4[4];
 extern String retMsg5[5]; 
 
-extern BluetoothSerial SerialBT;
+extern BluetoothSerial BT_SERIAL;
 
 void bt_init(){
     // Serial.println("bt_init");
@@ -80,5 +80,5 @@ void sendBT(String s){
     line2 = "";
     // Serial.print("S: ");
     // Serial.println(s);
-    SerialBT.println(btAddress+","+s);
+    BT_SERIAL.print(s);
 }   
